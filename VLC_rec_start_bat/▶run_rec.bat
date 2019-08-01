@@ -1,4 +1,4 @@
-::  2019/07/30
+::  2019/08/01  ScreenRecorder
 @echo off
 ::
 ::  実行開始する時刻（分）
@@ -9,13 +9,16 @@
     set rec_seconds=1800
 ::
 ::  録画を重複させる秒数
-  set rec_double_seconds=60
+  set rec_double_seconds=3
 ::
 ::  録画範囲
-::    幅    1920  3840  5760  7680  9600
-    set rec_area_width=1920
-::    高さ  1080  2160  3240  4320  5400
-    set rec_area_height=1080
+:: 1920  3840  5760  7680  9600
+:: 1080  2160  3240  4320  5400
+::
+::    幅
+    set rec_area_width=2160
+::    高さ
+    set rec_area_height=3840
 ::
 ::  録画範囲原点
     set screen_top=0
@@ -24,9 +27,9 @@
 ::
 ::  動画解像度
 ::    幅
-    set movie_format_width=1920
+    set movie_format_width=2160
 ::    高さ
-    set movie_format_height=1080
+    set movie_format_height=3840
 ::
 ::  管理用 変更しないでください
     set loop_sec=10
@@ -35,6 +38,9 @@
 ::
 ::
     md .\rec
+::
+::  確認用VLC起動
+start /MIN check_screen.bat %screen_top% %screen_left% %rec_area_width% %rec_area_height%
 ::
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :check_start_min
@@ -61,7 +67,7 @@
 if %flag_firsttime% EQU 1 (
     echo first time
     echo onetime_rec_seconds=%onetime_rec_seconds%
-    start /MIN rec.bat %onetime_rec_seconds% %rec_double_seconds% %screen_top% %screen_left% %rec_area_width% %rec_area_height% %movie_format_width% %movie_format_height%
+    start /MIN vlc_rec.bat %onetime_rec_seconds% %rec_double_seconds% %screen_top% %screen_left% %rec_area_width% %rec_area_height% %movie_format_width% %movie_format_height%
     set flag_firsttime=0
     timeout %cooltime%
     echo flag_firsttime=%flag_firsttime%
@@ -70,7 +76,7 @@ goto check_start_min
 for %%i in %list_start_min% do ^
 if %%i EQU %minute% (
     echo %%i, %minute%, cooltime = %cooltime%
-    start /MIN rec.bat %rec_seconds% %rec_double_seconds% %screen_top% %screen_left% %rec_area_width% %rec_area_height% %movie_format_width% %movie_format_height%
+    start /MIN vlc_rec.bat %rec_seconds% %rec_double_seconds% %screen_top% %screen_left% %rec_area_width% %rec_area_height% %movie_format_width% %movie_format_height%
     timeout %cooltime%
 )
     timeout %loop_sec%

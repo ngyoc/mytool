@@ -1,5 +1,5 @@
 @echo off
-
+:: 2019/08/01
 :: ÉpÉâÉÅÉ^éÛÇØéÊÇË
 set rec_seconds_vlc=%1
 set rec_double_seconds=%2
@@ -48,6 +48,7 @@ echo :: %movie_format_width%, %movie_format_height%
 
 
 "C:\Program Files\VideoLAN\VLC\vlc" -I dummy screen:// ^
+:file-caching=10000 ^
 :run-time=%rec_total_seconds% ^
 :screen-fps=30 ^
 :screen-top=%screen_top% ^
@@ -59,5 +60,5 @@ transcode{vcodec=h264,acodec=none,width=%movie_format_width%,height=%movie_forma
 :standard{access=file,mux=mp4,dst=%fname%} vlc://quit
 
 
-timeout 3
+timeout 15
 exit
